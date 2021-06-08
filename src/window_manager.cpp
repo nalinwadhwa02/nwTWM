@@ -65,6 +65,9 @@ void WindowManager::Run(){
 				OnConfigureRequest(e.xcreatewindow);
 				break;
 
+			case MapRequest:
+				OnMapRequest(e.xcreatewindow);
+				break;
 
 			default:
 				LOG(WARNING) << "Ignored Event";
@@ -85,4 +88,33 @@ int WindowManager::OnXError(Display* disp, XErrorEvent* e){
 }
 
 void WindowManager::OnCreateNotify(const XCreateWindowEvent& e){
+}
+
+void WindowManager::OnDestroyNotify(const XCreateWindowEvent& e){
+}
+
+void WindowManager::OnReparentNotify(const XCreateWindowEvent& e){
+}
+
+void WindowManager::OnConfigureRequest(const XCreateWindowEvent& e){
+	XWindowChanges ch;
+	ch.x= e.x;
+	ch.y=e.y;
+	ch.width = e.width;
+	ch.height = e.height;
+	ch.border_width = e.border_width;
+	ch.sibling = e.above;
+	ch.stack_mode = e.detail;
+
+	XConfigureWindow(display_, e.window, e.value_mask, &changes);
+	LOG(INFO)<<"Resized "<< e.window<<" to ("<<e.width<<","<<e.height<<")";
+}
+
+void WindowManager::OnMapRequest(const XCreateWindowEvent& e){
+	Frame(e.window);
+	XMapWindow(display_,e.window);
+}
+
+void WindowManager::Frame(Window w){
+
 }

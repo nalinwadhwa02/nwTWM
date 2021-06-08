@@ -33,6 +33,11 @@ class WindowManager{
 
 	//CreateNotify
 	void OnCreateNotify(const XCreateWindowEvent& e);
+	void OnDestroyNotify(const XCreateWindowEvent& e);
+	void OnReparentNotify(const XCreateWindowEvent& e);
+	void OnConfigureRequest(const XCreateWindowEvent& e);
+	void OnMapRequest(const XCreateWindowEvent& e);
+	void Frame(Window w);
 	
 };
 
