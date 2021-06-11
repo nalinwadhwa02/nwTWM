@@ -116,5 +116,23 @@ void WindowManager::OnMapRequest(const XCreateWindowEvent& e){
 }
 
 void WindowManager::Frame(Window w){
+	const unsigned int Border_Width = 2;
+	const unsigned long Border_Color = 0x8888bb;
+	const unsigned long Bg_Color = 0x333333;
+
+	XWindowAttributes w_attrs;
+	CHECK(XGetWindowAttributes(display_, w, w_attrs));
+
+
+	//create frame for windows;
+	const Window frame = XCreateSimpleWindow(display_, root_, w_attrs.x, w_attrs.y, w_attrs.width, w_attrs.height, w_attrs.Border_Width, w_attrs.Border_Color, w_attrs.Bg_Color);
+	XSelectInput(display_, frame, SubstructureRedirectMask | SubstructureNotifyMask);
+
+	XAddToSaveSet(display_, w);
+
+	XReparentWindow(display_, w, frame, 0,0);
+
+	XMapWindow(display_, frame);
+	
 
 }
